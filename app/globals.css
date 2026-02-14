@@ -1,26 +1,489 @@
-@import "tailwindcss";
-
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+    --bg-color: #f8f9fa;
+    --text-color: #333;
+    --card-bg: #fff;
+    --primary: #5c6bc0;
+    --primary-hover: #3949ab;
+    --border: #e0e0e0;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    background-color: var(--card-bg);
+    position: relative;
+    z-index: 0;
+    overflow: hidden;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    padding: 30px;
+    width: 100%;
+    max-width: 500px;
+    min-height: 500px;
+    text-align: center;
+}
+
+h1 {
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+    color: #1a1a1a;
+}
+
+p {
+    color: #666;
+    margin-bottom: 2rem;
+}
+
+.controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 2rem;
+    width: 100%;
+}
+
+.toggle-group {
+    margin-bottom: 15px;
+}
+
+.toggle-checkbox {
+    display: none;
+}
+
+.palette input {
+    border: 2px solid black;
+}
+
+.palette :checked {
+    border: 2px solid gold;
+    border-style: dotted;
+}
+
+.palette input:hover::after {
+    content: attr(title);
+    position: absolute;
+    margin-top: -1.2em;
+}
+
+.toggle-label {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #f1f1f1;
+    color: #555;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+}
+
+.toggle-label:hover {
+    background-color: #e0e0e0;
+}
+
+.toggle-checkbox:checked+.toggle-label {
+    background-color: var(--primary);
+    color: white;
+}
+
+.advanced {
+    display: none;
+    width: 100%;
+}
+
+.toggle-checkbox:checked~.advanced {
+    display: block;
+}
+
+.color-Input-group {
+    background: #f1f1f1;
+    border-radius: 8px;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    font-size: 1rem;
+    display: flex;
+    margin-top: 40px;
+    font-size: 125%;
+}
+
+input[type="color"] {
+    border: none;
+    width: 40px;
+    height: 40px;
+    background: none;
+    cursor: pointer;
+    border-radius: 4px;
+    /* Optional, chrome's default is square */
+    padding: 0;
+}
+
+button {
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-weight: 500;
+}
+
+button:hover {
+    background-color: var(--primary-hover);
+}
+
+.action-buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.action-button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.button-subtitle {
+    font-size: 0.7rem;
+    color: #666;
+    max-width: 280px;
+    text-align: center;
+    line-height: 1.4;
+    font-style: italic;
+    opacity: 0.7;
+    margin-top: 4px;
+}
+
+.action-buttons button {
+    white-space: nowrap;
+}
+
+.sort-select {
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background-color: #f9f9f9;
+    font-size: 0.9rem;
+    color: var(--text-color);
+    cursor: pointer;
+    width: 100%;
+}
+
+.sort-select:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+.results {
+    border-top: 1px solid var(--border);
+    padding-top: 20px;
+    text-align: left;
+}
+
+.results h2 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.comparison {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 20px;
+}
+
+.swatch-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 0.9rem;
+    color: #555;
+    gap: 5px;
+}
+
+.swatch {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 3px solid #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    background-color: #eee;
+}
+
+.steps-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 300px;
+    /* Limit height */
+    overflow-y: auto;
+}
+
+.step-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #f0f0f0;
+    gap: 10px;
+}
+
+.step-item:last-child {
+    border-bottom: none;
+}
+
+.step-number {
+    font-weight: bold;
+    color: #888;
+    width: 25px;
+}
+
+.step-details {
+    flex-grow: 1;
+}
+
+.step-swatch {
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+
+.primaries-group {
+    width: 100%;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.primaries-group>label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: #555;
+    font-size: 0.9rem;
+}
+
+.checkbox-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 8px;
+    background: #f1f1f1;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.checkbox-item input {
+    cursor: pointer;
+}
+
+/* Recipe Card Styles */
+.recipe-card {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.recipe-card h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: var(--primary);
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 8px;
+    margin-bottom: 12px;
+}
+
+.recipe-summary {
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    margin-top: 12px;
+    color: #444;
+}
+
+/* Drag and Drop Styles */
+.step-item {
+    cursor: grab;
+    transition: background-color 0.2s, opacity 0.2s;
+}
+
+.step-item.input-step {
+    cursor: default;
+    /* First step might not be draggable if we decide to lock it, but plan says all reorderable. Let's keep it draggable for now. */
+}
+
+.step-item.dragging {
+    opacity: 0.5;
+    background-color: #e8eaf6;
+    border: 1px dashed var(--primary);
+}
+
+.steps-list {
+    min-height: 50px;
+    /* Ensure drop target exists even if empty (though it won't be empty) */
+}
+
+.step-weight {
+    width: 3em;
+    text-align: right;
+    border: none;
+}
+
+.step-weight::-webkit-inner-spin-button {
+    display: none;
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+#searchInput {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    /* Ensure padding doesn't affect width */
+}
+
+/* Search Autocomplete Styles */
+.search-container {
+    position: relative;
+    width: 100%;
+}
+
+.search-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 0 0 5px 5px;
+    z-index: 1000;
+    max-height: 300px;
+    overflow-y: auto;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: none;
+    /* Hidden by default */
+}
+
+.search-results.active {
+    display: block;
+}
+
+.search-result-item {
+    padding: 16px;
+    height: 1em;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: background-color 0.2s;
+}
+
+.search-result-item:last-child {
+    border-bottom: none;
+}
+
+.search-result-item:hover {
+    background-color: #f5f5f5;
+}
+
+.result-swatch {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 1px solid #ddd;
+    flex-shrink: 0;
+}
+
+.result-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.result-name {
+    font-weight: 500;
+    color: #333;
+}
+
+.result-brand {
+    font-size: 0.8rem;
+    color: #888;
+}
+
+/* Spinner Styles */
+.spinner {
+    width: 30px;
+    height: 30px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid var(--primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 10px auto;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Mixer Loader Styles */
+#mixLoader {
+    width: 100%;
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.95);
+    z-index: -1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 1s ease;
+    opacity: 1;
+}
+
+#mixLoader.fade-out {
+    opacity: 0;
+    pointer-events: none;
+}
+
+#optimizeBtn {
+    visibility: hidden;
+    background-color: #27ae60;
 }
