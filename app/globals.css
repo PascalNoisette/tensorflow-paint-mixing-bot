@@ -28,7 +28,7 @@ body {
     padding: 30px;
     width: 100%;
     max-width: 500px;
-    min-height: 500px;
+    min-height: 600px;
     text-align: center;
 }
 
@@ -227,7 +227,7 @@ button:hover {
     border-radius: 50%;
     border: 3px solid #fff;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    background-color: #eee;
+    background-color: var(--swatch-color);
 }
 
 .steps-list {
@@ -266,6 +266,14 @@ button:hover {
     height: 24px;
     border-radius: 4px;
     border: 1px solid #ddd;
+    background-color: var(--swatch-color);
+}
+
+.palette-swatch {
+    width: 24px;
+    height: 24px;
+    background-color: var(--swatch-color);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
 .primaries-group {
@@ -386,11 +394,11 @@ button:hover {
     top: 100%;
     left: 0;
     right: 0;
-    background: #fff;
+    background: rgb(255, 255, 255, 0.93);
     border: 1px solid #ccc;
     border-radius: 0 0 5px 5px;
     z-index: 1000;
-    max-height: 300px;
+    max-height: 380px;
     overflow-y: auto;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     display: none;
@@ -417,7 +425,7 @@ button:hover {
 }
 
 .search-result-item:hover {
-    background-color: #f5f5f5;
+    background-color: rgb(245, 245, 245, 0.9);
 }
 
 .result-swatch {
@@ -426,6 +434,7 @@ button:hover {
     border-radius: 50%;
     border: 1px solid #ddd;
     flex-shrink: 0;
+    background-color: var(--swatch-color);
 }
 
 .result-info {

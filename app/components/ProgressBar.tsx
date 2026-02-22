@@ -15,6 +15,9 @@ export function ProgressBar() {
             ""
         ];
         setMessage(jokes[Math.min(Math.floor(application.computation / 10), jokes.length - 1)]);
+        if (application.computation == 0) {
+            document.getElementsByClassName("results")[0]?.scrollIntoView();
+        }
     }, [application.computation]);
     return <div>{message}&nbsp;<br /> &nbsp;{application.computation ? "Computation : " + application.computation : ""}</div>;
 }

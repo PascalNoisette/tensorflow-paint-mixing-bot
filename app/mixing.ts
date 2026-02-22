@@ -57,12 +57,12 @@ function getKmDistance(ks1: { r: number, g: number, b: number }, ks2: { r: numbe
 }
 
 // Helper to add if good
-const evaluateCombinaison = (target: ApplicationColor, colors: ApplicationColor[], weights: number[]): ApplicationReceipe => {
+const evaluateCombinaison = (target: ApplicationColor, colors: ApplicationColor[], weights: number[], force: boolean = false): ApplicationReceipe => {
 
 
     // normalize weights the smallest is 1 without causing rounding
     const minWeight = Math.min(...weights);
-    const normalizedWeights = weights.map(w => Math.round(10 * w / minWeight));
+    const normalizedWeights = weights.map(w => force ? w : Math.round(10 * w / minWeight));
 
 
 
@@ -71,7 +71,7 @@ const evaluateCombinaison = (target: ApplicationColor, colors: ApplicationColor[
     const dist = getDistance(mix.rgb, target.rgb);
     const cmykDist = target.cmyk && mix.cmyk ? getCmykDistance(mix.cmyk, target.cmyk) : 0;
     const kmDist = target.ks && mix.ks ? getKmDistance(mix.ks, target.ks) : 0;
-    const sortedIndex = weights.map((_, index: number) => index).sort((a, b) => weights[b] - weights[a]);
+    const sortedIndex = weights.map((_, index: number) => index).sort((a, b) => force ? 0 : weights[b] - weights[a]);
 
     return {
         colors: sortedIndex.map(i => colors[i]),
@@ -181,3 +181,37 @@ export async function solveMixing(application: ApplicationContextType): Promise<
     application.setRecipes(bestUniqueRecipes);
     application.setComputation(0);
 }
+
+export function handleWeightChange(application: ApplicationContextType, recipeIndex: number, weightIndex: number, newWeight: number) {
+    const newRecipes = [...application.recipes];
+    const recipe = newRecipes[recipeIndex];
+    const newWeights = [...recipe.weights];
+    newWeights[weightIndex] = newWeight;
+    // Re-evaluate recipe without re-sorting to keep UI stable, and without normalization to keep user input
+    const updatedRecipe = evaluateCombinaison(application.target, recipe.colors, newWeights, true);
+    newRecipes[recipeIndex] = updatedRecipe;
+    application.setRecipes(newRecipes);
+}
+
+export const handleDrop = (application: ApplicationContextType, color: ApplicationColor) => {
+    if (application.recipes.length === 0) {
+        const newRecipe = evaluateCombinaison(application.target, [color], [1], true);
+        application.setRecipes([newRecipe]);
+    } else {
+        const updatedRecipes = application.recipes.map(recipe => {
+            const colorIndex = recipe.colors.findIndex(c => c.css === color.css);
+            let newColors = [...recipe.colors];
+            let newWeights = [...recipe.weights];
+
+            if (colorIndex > -1) {
+                newWeights[colorIndex] += 1;
+            } else {
+                newColors.push(color);
+                newWeights.push(1);
+            }
+
+            return evaluateCombinaison(application.target, newColors, newWeights, true);
+        });
+        application.setRecipes(updatedRecipes);
+    }
+};
